@@ -56,6 +56,8 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
     implementation(platform(libs.compose.bom))
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+//    implementation 'androidx.constraintlayout:constraintlayout-compose:1.0.0-beta01'
     implementation(libs.ui)
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
