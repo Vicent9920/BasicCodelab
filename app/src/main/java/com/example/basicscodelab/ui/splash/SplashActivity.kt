@@ -1,4 +1,4 @@
-package com.example.basicscodelab
+package com.example.basicscodelab.ui.splash
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -8,12 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.basicscodelab.ui.page.GuideAScreen
-import com.example.basicscodelab.ui.page.GuideCScreen
-import com.example.basicscodelab.ui.page.SplashScreen
 import com.example.basicscodelab.ui.theme.BasicsCodelabTheme
 
-class MainActivity : ComponentActivity() {
+class SplashActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

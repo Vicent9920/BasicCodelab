@@ -1,4 +1,4 @@
-package com.example.basicscodelab.ui.page
+package com.example.basicscodelab.ui.splash
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image

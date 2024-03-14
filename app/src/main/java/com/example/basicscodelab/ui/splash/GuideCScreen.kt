@@ -1,4 +1,4 @@
-package com.example.basicscodelab.ui.page
+package com.example.basicscodelab.ui.splash
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
@@ -23,7 +24,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.basicscodelab.R
@@ -31,8 +34,9 @@ import com.example.basicscodelab.ui.theme.BasicsCodelabTheme
 import com.example.basicscodelab.ui.theme.Typography
 import com.example.basicscodelab.ui.widget.PointNormalView
 
+@ExperimentalTextApi
 @Composable
-fun GuideBScreen(nextClick: () -> Unit = {}) {
+fun GuideCScreen(nextClick: () -> Unit = {}) {
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.mipmap.ic_guide_second),
@@ -48,13 +52,13 @@ fun GuideBScreen(nextClick: () -> Unit = {}) {
     ) {
         Spacer(modifier = Modifier.weight(1f))
         Text(
-            text = "Interesting card\nstyle",
+            text = "Date reminder",
             color = Color(0xFF784226),
             style = Typography.titleMedium.copy(fontWeight = FontWeight.Bold)
         )
         Spacer(modifier = Modifier.height(12.dp))
         Text(
-            text = "Important days, clear at a glance",
+            text = "Never miss important moments",
             color = Color(0xFFBE8071),
             style = Typography.bodySmall
         )
@@ -66,36 +70,29 @@ fun GuideBScreen(nextClick: () -> Unit = {}) {
         ) {
             PointNormalView()
             Spacer(modifier = Modifier.width(12.dp))
+            PointNormalView()
+            Spacer(modifier = Modifier.width(12.dp))
             Icon(
                 painter = painterResource(id = R.drawable.ic_point_indicator),
                 contentDescription = null,
                 tint = Color.Unspecified,
                 modifier = Modifier.size(16.dp)
             )
-            Spacer(modifier = Modifier.width(12.dp))
-            PointNormalView()
             Spacer(modifier = Modifier.weight(1f))
             ElevatedButton(
                 onClick = nextClick,
                 colors = ButtonDefaults.elevatedButtonColors(containerColor = Color(0xFFF9B5B5)),
                 border = BorderStroke(width = 2.dp, color = Color(0xFF784226)),
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = "Next step",
-                        style = Typography.titleMedium.copy(
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White
-                        )
+                Text(
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.widthIn(min = 70.dp),
+                    text = "Start",
+                    style = Typography.titleMedium.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
                     )
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Icon(
-                        painter = painterResource(id = R.drawable.guide_arrow),
-                        contentDescription = null,
-                        tint = Color.Unspecified
-                    )
-
-                }
+                )
 
             }
 
@@ -107,12 +104,13 @@ fun GuideBScreen(nextClick: () -> Unit = {}) {
 
 }
 
+@OptIn(ExperimentalTextApi::class)
 @Preview(showBackground = true, widthDp = 360, heightDp = 640)
 @Composable
-fun GuideBScreenPreview() {
+fun GuideCScreenPreview() {
     BasicsCodelabTheme {
         Surface {
-            GuideBScreen()
+            GuideCScreen()
         }
     }
 }
