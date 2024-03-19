@@ -1,5 +1,6 @@
 package com.example.basicscodelab.ui.splash
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,14 +21,16 @@ import com.example.basicscodelab.R
 import com.example.basicscodelab.ui.theme.Typography
 
 @Composable
-fun SplashScreen() {
+fun SplashScreen(onClick:() -> Unit) {
     Column(modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(modifier = Modifier.fillMaxHeight(0.3f))
         Icon(painter = painterResource(id = R.mipmap.ic_splash),
             contentDescription = null,
             tint = Color.Unspecified,
-            modifier = Modifier.fillMaxWidth(0.76f))
+            modifier = Modifier.fillMaxWidth(0.76f).clickable {
+                onClick()
+            })
         Spacer(modifier = Modifier.weight(1f))
         Row(modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
