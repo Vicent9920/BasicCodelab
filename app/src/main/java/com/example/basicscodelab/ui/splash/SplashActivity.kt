@@ -1,53 +1,78 @@
 package com.example.basicscodelab.ui.splash
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.basicscodelab.ui.dialog.PrivacyPolicyDialog
+import com.example.basicscodelab.ui.home.MainActivity
 import com.example.basicscodelab.ui.theme.BasicsCodelabTheme
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class SplashActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             BasicsCodelabTheme {
-                // A surface container using the 'background' color from the theme
-                MyApp()
+                MyApp(exit = {
+                    this.finishAndRemoveTask()
+                }, next = { startActivity(Intent(this, MainActivity::class.java)) })
             }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyApp(modifier: Modifier = Modifier,viewModel: SplashViewModel = SplashViewModel()) {
-    Surface(modifier) {
-        SplashScreen{
+fun MyApp(exit: () -> Unit, next: () -> Unit, viewModel: SplashViewModel = SplashViewModel()) {
+    BasicsCodelabTheme {
+        var pageIndex by rememberSaveable { mutableIntStateOf(0) }
+        Scaffold { paddingValues ->
+            when (pageIndex) {
+                0 -> SplashScreen(modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues), check = { viewModel.checkAgreed() }, next = {
+                    viewModel.setAgreeFlag()
+                    if (viewModel.checkGuided()) {
+                        next()
+                    } else {
+                        pageIndex++
+                    }
+                }, exit = exit
+                )
 
-        }
-        // 获取与当前Composable关联的CoroutineScope
-        val coroutineScope = rememberCoroutineScope()
+                1 -> GuideAScreen(modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues), nextClick = { pageIndex++ })
 
-        // 开启协程
-        LaunchedEffect(Unit) {
-            coroutineScope.launch {
-                delay(2000L)
-                if(viewModel.checkGuided()){
-                    // 打开主页
-                }else{
-                    // 开启隐私弹窗
-                }
+                2 -> GuideBScreen(modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues), nextClick = { pageIndex++ })
+
+                3 -> GuideCScreen(modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues), nextClick = {
+                    viewModel.setGuideFlag()
+                    next()
+                })
             }
-        }
 
+        }
     }
+
 }
 
 
@@ -56,8 +81,10 @@ fun MyApp(modifier: Modifier = Modifier,viewModel: SplashViewModel = SplashViewM
 fun MyAppPreview() {
     BasicsCodelabTheme {
         Surface {
-           SplashScreen(){}
+//           SplashScreen()
             // GuideAScreen()
+            PrivacyPolicyDialog({
+            }, {})
         }
     }
 }

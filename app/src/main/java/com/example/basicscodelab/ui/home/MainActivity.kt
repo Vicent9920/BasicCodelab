@@ -78,7 +78,6 @@ fun MainPage(modifier: Modifier = Modifier) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Screen(modifier: Modifier = Modifier) {
-    var showDialog by remember { mutableStateOf(true) }
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -117,11 +116,7 @@ fun Screen(modifier: Modifier = Modifier) {
 //        }
     )
 
-    if (showDialog) {
-        PrivacyPolicyDialog({
-            showDialog = false
-        }, {})
-    }
+
 
 
 }

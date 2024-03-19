@@ -32,7 +32,7 @@ import com.example.basicscodelab.ui.theme.Typography
 import com.example.basicscodelab.ui.widget.PointNormalView
 
 @Composable
-fun GuideAScreen(nextClick: () -> Unit = {}) {
+fun GuideAScreen(modifier: Modifier = Modifier,nextClick: () -> Unit = {}) {
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.mipmap.ic_guide_first),

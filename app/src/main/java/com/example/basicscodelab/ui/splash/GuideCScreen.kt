@@ -34,10 +34,9 @@ import com.example.basicscodelab.ui.theme.BasicsCodelabTheme
 import com.example.basicscodelab.ui.theme.Typography
 import com.example.basicscodelab.ui.widget.PointNormalView
 
-@ExperimentalTextApi
 @Composable
-fun GuideCScreen(nextClick: () -> Unit = {}) {
-    Box(modifier = Modifier.fillMaxSize()) {
+fun GuideCScreen(modifier: Modifier = Modifier,nextClick: () -> Unit = {}) {
+    Box(modifier = modifier) {
         Image(
             painter = painterResource(id = R.mipmap.ic_guide_second),
             contentDescription = null,
@@ -104,7 +103,6 @@ fun GuideCScreen(nextClick: () -> Unit = {}) {
 
 }
 
-@OptIn(ExperimentalTextApi::class)
 @Preview(showBackground = true, widthDp = 360, heightDp = 640)
 @Composable
 fun GuideCScreenPreview() {

@@ -53,10 +53,10 @@ import com.example.basicscodelab.ui.theme.Typography
 @Composable
 fun PrivacyPolicyDialog(
     onDismiss: () -> Unit,
-    onConfirm: () -> Unit
+    onConfirm: (Boolean) -> Unit
 ) {
         Dialog(onDismissRequest = onDismiss) {
-            Box(modifier = Modifier.size(300.dp, 420.dp)) {
+            Box(modifier = Modifier.size(300.dp, 500.dp).padding(bottom = 80.dp)) {
                 Image(
                     painter = painterResource(id = R.mipmap.bg_privacy),
                     contentDescription = null,
@@ -101,15 +101,10 @@ fun PrivacyPolicyDialog(
                                 }
                             })
                     }
-
-                    // Text(text = "Thank you for using Chiccuts. Clicking agree means that you agree to the 《service agreement》, 《privacy agreement》 and 《copyright policy》. If you do not agree, you will not be able to continue using Chiccuts.",
-                    //   textAlign = TextAlign.Center,
-                    //   style = Typography.bodySmall.copy(color = Color(0xFF9CA3AF)),
-                    //   modifier = Modifier.weight(1f))
                     Spacer(modifier = Modifier.height(20.dp))
                     ElevatedButton(
                         onClick = {
-                            onConfirm()
+                            onConfirm(true)
                             onDismiss()
                         },
                         colors = ButtonDefaults.elevatedButtonColors(
@@ -138,6 +133,7 @@ fun PrivacyPolicyDialog(
                     Text(
                         text = "Disagree",
                         modifier = Modifier.clickable {
+                            onConfirm(false)
                             onDismiss()
                         },
                         style = Typography.labelMedium.copy(color = Color(0xFFBE8071))

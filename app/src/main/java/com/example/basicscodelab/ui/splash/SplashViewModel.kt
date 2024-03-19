@@ -1,6 +1,5 @@
 package com.example.basicscodelab.ui.splash
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.basicscodelab.utils.PreferenceUtil
 
@@ -12,15 +11,25 @@ import com.example.basicscodelab.utils.PreferenceUtil
  * Email:vincent.wei@backgardon.com
  * Version:
  */
-class SplashViewModel:ViewModel() {
-  private val guided by PreferenceUtil("splash_guide",false)
+class SplashViewModel : ViewModel() {
+    private val guided by PreferenceUtil("splash_guide", false)
 
-  fun checkGuided():Boolean{
-    return guided
-  }
+    private val agreed by PreferenceUtil("splash_agreed", false)
 
-  fun setGuideFlag(){
-    checkGuided()
-  }
+    fun checkGuided(): Boolean {
+        return guided
+    }
+
+    fun setGuideFlag() {
+        PreferenceUtil("splash_guide", false).setValue(this, ::guided, true)
+    }
+
+    fun checkAgreed(): Boolean {
+        return agreed
+    }
+
+    fun setAgreeFlag() {
+        PreferenceUtil("splash_agreed", false).setValue(this, ::agreed, true)
+    }
 
 }
