@@ -1,4 +1,4 @@
-package com.example.basicscodelab.ui.home
+package com.example.basicscodelab.ui.widget
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -33,7 +32,7 @@ import com.example.basicscodelab.ui.theme.BasicsCodelabTheme
 @Composable
 fun CustomCardView(modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit) {
   Card(
-    modifier = Modifier
+    modifier = modifier
       .fillMaxWidth()
       .padding(16.dp, 200.dp)
       .border(width = 2.dp, color = Color.Red, shape = RoundedCornerShape(12.dp))
