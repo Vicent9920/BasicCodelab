@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -50,11 +51,11 @@ import com.example.basicscodelab.utils.DateUtils
  * Version:
  */
 @Composable
-fun HomeScreen(modifier: Modifier, homeViewModel: HomeViewModel = viewModel()) {
+fun HomeScreen(homeViewModel: HomeViewModel = viewModel()) {
   val list by homeViewModel.queryAllDaysBean().collectAsState(initial = emptyList())
   Column(
-    modifier = modifier
-      .fillMaxWidth()
+    modifier = Modifier
+      .fillMaxSize()
       .background(color = Color(0xFFFFF8EE)),
     horizontalAlignment = Alignment.CenterHorizontally
   ) {

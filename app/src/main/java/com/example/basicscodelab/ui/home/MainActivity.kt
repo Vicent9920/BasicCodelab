@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -43,10 +44,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -58,9 +55,10 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.example.basicscodelab.R
 import com.example.basicscodelab.contant.StaticData
-import com.example.basicscodelab.ui.dialog.PrivacyPolicyDialog
 import com.example.basicscodelab.ui.theme.BasicsCodelabTheme
 import com.example.basicscodelab.ui.theme.Typography
 
@@ -80,15 +78,20 @@ fun MainPage(modifier: Modifier = Modifier) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Screen(modifier: Modifier = Modifier) {
-  var index by remember { mutableIntStateOf(0) }
-  val titles = mutableListOf("Meow Day", "Today's mood", "Meow setting")
+  val navController = rememberNavController()
+  val currentBackStack by navController.currentBackStackEntryAsState()
+  val currentDestination = currentBackStack?.destination
+  val currentScreen =
+    mainTabRowScreens.find { it.route == currentDestination?.route }
+      ?: Home
+
   Scaffold(
     modifier = modifier,
     topBar = {
       CenterAlignedTopAppBar(
         title = {
           Text(
-            text = titles[index],
+            text = currentScreen.title,
             style = Typography.titleLarge.copy(fontWeight = FontWeight.ExtraBold)
           )
         },
@@ -96,23 +99,13 @@ fun Screen(modifier: Modifier = Modifier) {
       )
     },
     bottomBar = {
-      MainBottomNavigation { value ->
-        if (index != value) {
-          index = value
-        }
+      MainBottomNavigation(currentScreen) { screen ->
+        navController.navigateSingleTopTo(screen.route)
       }
     },
-    content = { paddingValues ->
-      when(index){
-        0 -> HomeScreen(modifier = Modifier.padding(paddingValues))
-        1 -> MoodScreen(modifier = Modifier.padding(paddingValues))
-        2 -> SettingScreen(modifier = Modifier.padding(paddingValues))
-      }
-
-    },
-
     floatingActionButton = {
-      if (index == 0) {
+
+      if (currentScreen.showFAB) {
         ExtendedFloatingActionButton(
           onClick = {},
         ) {
@@ -131,16 +124,19 @@ fun Screen(modifier: Modifier = Modifier) {
       }
 
     }
-  )
+  ) { innerPadding ->
+    MainNavHost(
+      navController = navController,
+      modifier = Modifier.padding(innerPadding)
+    )
+  }
 }
 
-
-
 @Composable
-fun MoodScreen(modifier: Modifier) {
+fun MoodScreen() {
   Column(
-    modifier = modifier
-      .fillMaxWidth()
+    modifier = Modifier
+      .fillMaxSize()
       .background(color = Color(0xFFFFF8EE)),
     horizontalAlignment = Alignment.CenterHorizontally
   ) {
@@ -224,10 +220,10 @@ fun MoodScreen(modifier: Modifier) {
 }
 
 @Composable
-fun SettingScreen(modifier: Modifier) {
+fun SettingScreen() {
   Column(
-    modifier = modifier
-      .fillMaxWidth()
+    modifier = Modifier
+      .fillMaxSize()
       .background(color = Color(0xFFFFF8EE)),
     horizontalAlignment = Alignment.CenterHorizontally
   ) {
@@ -402,52 +398,67 @@ fun SettingScreen(modifier: Modifier) {
 }
 
 @Composable
-private fun MainBottomNavigation(modifier: Modifier = Modifier, onItemClick: (Int) -> Unit) {
+private fun MainBottomNavigation(screen: MainDestination, onItemClick: (MainDestination) -> Unit) {
   NavigationBar(
     containerColor = MaterialTheme.colorScheme.surfaceVariant,
-    modifier = modifier
+    modifier = Modifier
   ) {
     NavigationBarItem(
       icon = {
         Icon(
-          painter = painterResource(id = R.mipmap.ic_home_selected),
+          painter = painterResource(id = if (screen is Home) R.mipmap.ic_home_selected else R.mipmap.ic_home_normal),//ic_setting_normal
           tint = Color.Unspecified,
           contentDescription = null
         )
       },
       label = {
-        Text("Home")
+        Text(
+          "Home",
+          style = Typography.labelMedium.copy(
+            color = if (screen is Home) Color(0xFF121212) else Color(0xFFA6A6A6)
+          )
+        )
       },
       selected = true,
-      onClick = { onItemClick.invoke(0) }
+      onClick = { onItemClick.invoke(Home) }
     )
     NavigationBarItem(
       icon = {
         Icon(
-          painter = painterResource(id = R.mipmap.ic_mood_normal),
+          painter = painterResource(id = if (screen is Mood) R.mipmap.ic_mood_selected else R.mipmap.ic_mood_normal),
           tint = Color.Unspecified,
           contentDescription = null
         )
       },
       label = {
-        Text("Mood")
+        Text(
+          "Mood",
+          style = Typography.labelMedium.copy(
+            color = if (screen is Mood) Color(0xFF121212) else Color(0xFFA6A6A6)
+          )
+        )
       },
       selected = false,
-      onClick = { onItemClick.invoke(1) }
+      onClick = { onItemClick.invoke(Mood) }
     )
     NavigationBarItem(
       icon = {
         Icon(
-          painter = painterResource(id = R.mipmap.ic_setting_normal),
+          painter = painterResource(id = if (screen is Setting) R.mipmap.ic_setting_selected else R.mipmap.ic_setting_normal),
           tint = Color.Unspecified,
           contentDescription = null
         )
       },
       label = {
-        Text("Setting")
+        Text(
+          "Setting",
+          style = Typography.labelMedium.copy(
+            color = if (screen is Setting) Color(0xFF121212) else Color(0xFFA6A6A6)
+          )
+        )
       },
       selected = false,
-      onClick = { onItemClick.invoke(2) }
+      onClick = { onItemClick.invoke(Setting) }
     )
   }
 }
