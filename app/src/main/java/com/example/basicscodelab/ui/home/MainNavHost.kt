@@ -25,7 +25,7 @@ fun MainNavHost(
     modifier = modifier
   ){
     composable(Home.route){
-      HomeScreen()
+      Anniversary()
     }
     composable(Mood.route){
       MoodScreen()
